@@ -52,5 +52,5 @@ default_grid = [[0, 1, 0, 0, 0, 0, 9, 0, 0],
 
 
 
-s.SudokuSolver(default_grid)
+s = SudokuSolver(default_grid)
 
