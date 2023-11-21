@@ -7,11 +7,21 @@ class SudokuSolver:
 
     # Returns tuple with coordinates for emtpy square in grid
     def find_empty_square(self):
-        pass
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid)):
+                if self.grid[i][j] == 0:
+                    return (i, j)
+        return (-1, -1)
 
     # Returns true or false depending on if the given box works
     def check_box(self, box):
-        pass
+        numbers = []
+        counter = 0
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid)):
+                if counter == (box - 1) * 9:
+                    pass
+
 
     # Returns true or false depending on if the given row works
     def check_row(self, row):
@@ -24,14 +34,34 @@ class SudokuSolver:
     # Check if the entire grid has been solved
     # May need to check if this works properly, but can only do that after other methods completed
     def is_grid_solved(self):
-        pass
+        if self.find_empty_square() != (-1, -1):
+            return False
+        boxes = [0] * 9
+        rows = [0] * 9
+        columns = [0] * 9
+        for i in range(9):
+            if self.check_box(i):
+                boxes[i] += 1
+            if self.check_row(i):
+                rows[i] += 1
+            if self.check_box(i):
+                columns[i] += 1
+        for i in range(9):
+            if boxes[i] != 1:
+                return False
+            if rows[i] != 1:
+                return False
+            if columns[i] != 1:
+                return False
+        return True
 
     # Main method that does the solving
     def main_solver(self, position):
         pass
 
     def run(self):
-        pass
+        while not self.is_grid_solved():
+            pass
 
 
 
@@ -61,5 +91,6 @@ solved_grid = [[7, 9, 2, 1, 5, 4, 3, 8, 6],
                [5, 2, 8, 6, 3, 9, 4, 1, 7]]
 
 
-s = SudokuSolver(default_grid)
+s = SudokuSolver(solved_grid)
+
 
