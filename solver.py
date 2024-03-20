@@ -4,7 +4,6 @@ class SudokuSolver:
 
     def __init__(self, grid):
         self.grid = grid
-        self.NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     # Returns tuple with coordinates for empty square in grid
     def find_empty_square(self):
@@ -37,11 +36,14 @@ class SudokuSolver:
         for i in range(len(self.grid)):
             for j in range(len(self.grid)):
                 if counter in to_count:
-                    numbers.append(self.grid[i][j])
+                    if self.grid[i][j] != 0:
+                        numbers.append(self.grid[i][j])
                 counter += 1
 
-        numbers.sort()
-        if numbers == self.NUMBERS:
+        unique_numbers = list(set(numbers))
+        print(numbers)
+        print(unique_numbers)
+        if len(numbers) == len(unique_numbers):
             return True
         return False
 
@@ -53,10 +55,11 @@ class SudokuSolver:
         for i in range(len(self.grid)):
             for j in range(len(self.grid)):
                 if i == row:
-                    numbers.append(self.grid[i][j])
-        numbers.sort()
-        print(numbers)
-        if numbers == self.NUMBERS:
+                    if self.grid[i][j] != 0:
+                        numbers.append(self.grid[i][j])
+
+        unique_numbers = list(set(numbers))
+        if len(numbers) == len(unique_numbers):
             return True
         return False
             
@@ -67,10 +70,11 @@ class SudokuSolver:
         for i in range(len(self.grid)):
             for j in range(len(self.grid)):
                 if j == column:
-                    numbers.append(self.grid[i][j])
-        numbers.sort()
-        print(numbers)
-        if numbers == self.NUMBERS:
+                    if self.grid[i][j] != 0:
+                        numbers.append(self.grid[i][j])
+
+        unique_numbers = list(set(numbers))
+        if len(numbers) == len(unique_numbers):
             return True
         return False
 
@@ -104,6 +108,7 @@ class SudokuSolver:
     def main_solver(self, position):
         pass
 
+
     def run(self):
         while not self.is_grid_solved():
             pass
@@ -136,9 +141,13 @@ solved_grid = [[7, 9, 2, 1, 5, 4, 3, 8, 6],
                [5, 2, 8, 6, 3, 9, 4, 1, 7]]
 
 
-s = SudokuSolver(solved_grid)
+s = SudokuSolver(default_grid)
+
+print(s.check_box(1))
 
 # print("Check row:")
 # print(s.check_row(3))
 # print("Check column:")
 # print(s.check_column(6))
+
+# print(s.is_grid_solved())
