@@ -41,8 +41,6 @@ class SudokuSolver:
                 counter += 1
 
         unique_numbers = list(set(numbers))
-        print(numbers)
-        print(unique_numbers)
         if len(numbers) == len(unique_numbers):
             return True
         return False
@@ -79,6 +77,16 @@ class SudokuSolver:
         return False
 
 
+    def is_safe(self):
+        if not self.check_box:
+            return False
+        elif not self.check_row:
+            return False
+        elif not self.check_column:
+            return False
+
+        return True
+
 
     # Check if the entire grid has been solved
     # May need to check if this works properly, but can only do that after other methods completed
@@ -88,14 +96,14 @@ class SudokuSolver:
         boxes = [0] * 9
         rows = [0] * 9
         columns = [0] * 9
-        for i in range(8):
+        for i in range(9):
             if self.check_box(i + 1):
                 boxes[i] += 1
             if self.check_row(i):
                 rows[i] += 1
             if self.check_box(i):
                 columns[i] += 1
-        for i in range(8):
+        for i in range(9):
             if boxes[i] != 1:
                 return False
             if rows[i] != 1:
@@ -106,7 +114,14 @@ class SudokuSolver:
 
     # Main method that does the solving
     def main_solver(self, position):
-        pass
+        if self.find_empty_square() == (-1, -1):
+            return True
+
+        row, column = self.find_empty_square()
+
+
+
+
 
 
     def run(self):
