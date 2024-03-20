@@ -37,10 +37,11 @@ class SudokuSolver:
         for i in range(len(self.grid)):
             for j in range(len(self.grid)):
                 if counter in to_count:
-                    to_count.pop(to_count.index(counter))
                     numbers.append(self.grid[i][j])
+                counter += 1
 
-        if numbers.sort() == self.NUMBERS:
+        numbers.sort()
+        if numbers == self.NUMBERS:
             return True
         return False
 
