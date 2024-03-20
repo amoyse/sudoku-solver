@@ -4,6 +4,7 @@ class SudokuSolver:
 
     def __init__(self, grid):
         self.grid = grid
+        self.NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     # Returns tuple with coordinates for emtpy square in grid
     def find_empty_square(self):
@@ -17,10 +18,32 @@ class SudokuSolver:
     def check_box(self, box):
         numbers = []
         counter = 0
+        row1 = [1, 4, 7]
+        row2 = [2, 5, 8]
+        row3 = [3, 6, 9]
+        start = 0
+        if box in row1:
+            start = row1.index(box) * 27
+        elif box in row2:
+            start = (row2.index(box) * 27) + 3
+        elif box in row3:
+            start = (row3.index(box) * 27) + 6
+
+        to_count = []
+        to_calc_box = [0, 1, 2, 9, 10, 11, 18, 19, 20]
+        for i in to_calc_box:
+            to_count.append(start + i)
+
         for i in range(len(self.grid)):
             for j in range(len(self.grid)):
-                if counter == (box - 1) * 9:
-                    pass
+                if counter in to_count:
+                    to_count.pop(to_count.index(counter))
+                    numbers.append(self.grid[i][j])
+
+        if numbers.sort() == self.NUMBERS:
+            return True
+        return False
+
 
 
     # Returns true or false depending on if the given row works
@@ -39,12 +62,12 @@ class SudokuSolver:
         boxes = [0] * 9
         rows = [0] * 9
         columns = [0] * 9
-        for i in range(9):
-            if self.check_box(i):
+        for i in range(8):
+            if self.check_box(i + 1):
                 boxes[i] += 1
-            if self.check_row(i):
+            if self.check_row(i + 1):
                 rows[i] += 1
-            if self.check_box(i):
+            if self.check_box(i + 1):
                 columns[i] += 1
         for i in range(9):
             if boxes[i] != 1:
