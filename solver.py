@@ -51,9 +51,11 @@ class SudokuSolver:
     def check_row(self, row):
         numbers = []
         for i in range(len(self.grid)):
-            if i == row:
-                numbers = self.grid[i]
+            for j in range(len(self.grid)):
+                if i == row:
+                    numbers.append(self.grid[i][j])
         numbers.sort()
+        print(numbers)
         if numbers == self.NUMBERS:
             return True
         return False
@@ -61,7 +63,16 @@ class SudokuSolver:
 
     # Returns true or false depending on if the given column works
     def check_column(self, column):
-        pass
+        numbers = []
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid)):
+                if j == column:
+                    numbers.append(self.grid[i][j])
+        numbers.sort()
+        print(numbers)
+        if numbers == self.NUMBERS:
+            return True
+        return False
 
 
 
@@ -78,7 +89,7 @@ class SudokuSolver:
                 boxes[i] += 1
             if self.check_row(i):
                 rows[i] += 1
-            if self.check_box(i + 1):
+            if self.check_box(i):
                 columns[i] += 1
         for i in range(8):
             if boxes[i] != 1:
@@ -125,7 +136,9 @@ solved_grid = [[7, 9, 2, 1, 5, 4, 3, 8, 6],
                [5, 2, 8, 6, 3, 9, 4, 1, 7]]
 
 
-s = SudokuSolver(default_grid)
+s = SudokuSolver(solved_grid)
 
-print(s.check_row(3))
-
+# print("Check row:")
+# print(s.check_row(3))
+# print("Check column:")
+# print(s.check_column(6))
