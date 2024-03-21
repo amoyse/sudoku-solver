@@ -77,14 +77,22 @@ class SudokuSolver:
         return False
 
 
-    def is_safe(self):
-        if not self.check_box:
-            return False
-        elif not self.check_row:
-            return False
-        elif not self.check_column:
-            return False
+    def is_safe(self, pos, number):
+        self.grid[pos[0]][pos[1]] = number
 
+        for i in range(9):
+            if not self.check_box(i + 1):
+                self.grid[pos[0]][pos[1]] = 0
+                return False
+            elif not self.check_row(i):
+                self.grid[pos[0]][pos[1]] = 0
+                return False
+            elif not self.check_column(i):
+                self.grid[pos[0]][pos[1]] = 0
+                return False
+
+
+        self.grid[pos[0]][pos[1]] = 0
         return True
 
 
@@ -93,33 +101,32 @@ class SudokuSolver:
     def is_grid_solved(self):
         if self.find_empty_square() != (-1, -1):
             return False
-        boxes = [0] * 9
-        rows = [0] * 9
-        columns = [0] * 9
+
         for i in range(9):
-            if self.check_box(i + 1):
-                boxes[i] += 1
-            if self.check_row(i):
-                rows[i] += 1
-            if self.check_box(i):
-                columns[i] += 1
-        for i in range(9):
-            if boxes[i] != 1:
+            if not self.check_box(i + 1):
                 return False
-            if rows[i] != 1:
+            if not self.check_row(i):
                 return False
-            if columns[i] != 1:
+            if not self.check_box(i):
                 return False
         return True
 
     # Main method that does the solving
-    def main_solver(self, position):
+    def main_solver(self):
         if self.find_empty_square() == (-1, -1):
             return True
 
         row, column = self.find_empty_square()
 
+        # check if board is safe
+        for i in range(1, 10):
+            if self.is_safe([row, column], i):
+                self.grid[row][column] = i
+                if self.main_solver():
+                    return True
+                self.grid[row][column] = 0
 
+        return False
 
 
 
