@@ -129,12 +129,17 @@ class SudokuSolver:
         return False
 
 
+    def print_grid(self):
+        for i in range(9):
+            for j in range(9):
+                print(self.grid[i][j], end=" "),
+            print()
 
 
     def run(self):
         while not self.is_grid_solved():
-            pass
-
+            self.main_solver()
+        self.print_grid()
 
 
 
@@ -165,7 +170,7 @@ solved_grid = [[7, 9, 2, 1, 5, 4, 3, 8, 6],
 
 s = SudokuSolver(default_grid)
 
-print(s.check_box(1))
+s.run()
 
 # print("Check row:")
 # print(s.check_row(3))
