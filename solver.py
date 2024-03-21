@@ -77,23 +77,34 @@ class SudokuSolver:
         return False
 
 
-    def is_safe(self, pos, number):
-        self.grid[pos[0]][pos[1]] = number
+    def is_safe(self, pos=None, number=None):
+        if pos is not None and number is not None:
+            self.grid[pos[0]][pos[1]] = number
 
-        for i in range(9):
-            if not self.check_box(i + 1):
-                self.grid[pos[0]][pos[1]] = 0
-                return False
-            elif not self.check_row(i):
-                self.grid[pos[0]][pos[1]] = 0
-                return False
-            elif not self.check_column(i):
-                self.grid[pos[0]][pos[1]] = 0
-                return False
+            for i in range(9):
+                if not self.check_box(i + 1):
+                    self.grid[pos[0]][pos[1]] = 0
+                    return False
+                elif not self.check_row(i):
+                    self.grid[pos[0]][pos[1]] = 0
+                    return False
+                elif not self.check_column(i):
+                    self.grid[pos[0]][pos[1]] = 0
+                    return False
 
 
-        self.grid[pos[0]][pos[1]] = 0
-        return True
+            self.grid[pos[0]][pos[1]] = 0
+            return True
+        else:
+            for i in range(9):
+                if not self.check_box(i + 1):
+                    return False
+                elif not self.check_row(i):
+                    return False
+                elif not self.check_column(i):
+                    return False
+            return True
+
 
 
     # Check if the entire grid has been solved
@@ -118,14 +129,17 @@ class SudokuSolver:
 
         row, column = self.find_empty_square()
 
-        # check if board is safe
+        # for each number, check if it doesn't break grid state
+        # then set it, and keep going with solver
         for i in range(1, 10):
             if self.is_safe([row, column], i):
                 self.grid[row][column] = i
                 if self.main_solver():
+                    # means the thing is solved
                     return True
                 self.grid[row][column] = 0
 
+        # this triggers the backtracking, as previous call on stack is executed
         return False
 
 
@@ -137,8 +151,15 @@ class SudokuSolver:
 
 
     def run(self):
+        if not self.is_safe():
+            print("Entered grid is not valid. Please rerun and try again.")
+            return
         while not self.is_grid_solved():
             self.main_solver()
+        print()
+        print()
+        print("Solved sudoku grid:")
+        print()
         self.print_grid()
 
 
@@ -168,9 +189,21 @@ solved_grid = [[7, 9, 2, 1, 5, 4, 3, 8, 6],
                [5, 2, 8, 6, 3, 9, 4, 1, 7]]
 
 
-s = SudokuSolver(default_grid)
+if __name__ == "__main__":
+    entered_grid = []
+    print("Enter your sudoku grid, using 0 for empty squares.")
+    print("Separate each number with a space:")
+    for _ in range(9):
+        tmp_list = []
+        line = input()
+        tmp_list = line.split(" ")
+        tmp_list = list(map(int, tmp_list))
+        entered_grid.append(tmp_list)
 
-s.run()
+    s = SudokuSolver(entered_grid)
+    s.run()
+
+
 
 # print("Check row:")
 # print(s.check_row(3))
